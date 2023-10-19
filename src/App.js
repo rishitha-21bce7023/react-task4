@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+"use client"
+import { useEffect, useState } from 'react';
 import './App.css';
-
+import Table from './table';
+import axios from 'axios';
 function App() {
+  const [userdata,setUserdata] = useState([]);
+  const getData = async ()=>{
+    try{
+      const res = await axios.get("https://dummyjson.com/users");
+      setUserdata(res.data.users);
+    }
+    catch(error){
+      console.error("Error fetching the data",error);
+    }
+  }
+  useEffect(()=>{
+    getData();
+  },[]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Dummy Data</h1>
+      <Table data = {userdata}/>
     </div>
   );
 }
